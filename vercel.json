@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "name": "shieldcloud-security",
+  "builds": [
+    {
+      "src": "api/**/*.py",
+      "use": "@vercel/python",
+      "config": { "maxLambdaSize": "50mb" }
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    { "src": "/api/status",        "dest": "/api/status.py"        },
+    { "src": "/api/summary",       "dest": "/api/summary.py"       },
+    { "src": "/api/scan",          "dest": "/api/scan/cloud.py"    },
+    { "src": "/api/scan/cloud",    "dest": "/api/scan/cloud.py"    },
+    { "src": "/api/scan/secrets",  "dest": "/api/scan/secrets.py"  },
+    { "src": "/api/findings",      "dest": "/api/findings.py"      },
+    { "src": "/api/export",        "dest": "/api/export.py"        },
+    { "src": "/(.*)",              "dest": "/public/$1"            }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin",  "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    }
+  ]
+}
